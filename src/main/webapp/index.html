@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Calculator</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="css/calc_style.css" rel="stylesheet"/>
+    <script src="js/angular.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body ng-controller="appCtrl">
+<header>
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+            <span class="navbar-brand">Calculator</span>
+        </div>
+    </nav>
+</header>
+
+<section>
+    <div class="row">
+        <div class="container">
+            <div class="well">
+                <div class="{{state}}">
+                    <input type="text" class="form-control text-right" value="{{value}}" ng-init="value=0">
+                </div>
+                <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+                <div class="text-center">
+                    <p>
+                        <button type="button" class="btn btn-warning" ng-click="pow()">x<sup>2</sup></button>
+                        <button type="button" class="btn btn-warning" ng-click="sqrt()">sqrt</button>
+                        <button type="button" class="btn btn-warning" ng-click="clearlastchar()">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger" ng-click="clear()">CE</button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(7)">7</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(8)">8</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(9)">9</button>
+                        <button type="button" class="btn btn-info btn-lg" ng-click="division()">/</button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(4)">4</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(5)">5</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(6)">6</button>
+                        <button type="button" class="btn btn-info btn-lg" ng-click="multiplication()">*</button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(1)">1</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(2)">2</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(3)">3</button>
+                        <button type="button" class="btn btn-info btn-lg" ng-click="sum()">+</button>
+                    </p>
+                    <p>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit(0)">0</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="digit('.')">.</button>
+                        <button type="button" class="btn btn-success btn-lg" ng-click="result()">=</button>
+                        <button type="button" class="btn btn-info btn-lg" ng-click="difference()">-</button>
+                    <p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="container col-lg-6 col-lg-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Panel Heading
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <tr class="success">
+                            <td class="text-center">ID</td>
+                            <td class="text-center">Expression</td>
+                            <td class="text-center">Correct</td>
+                        </tr>
+                        <tr ng-class="{'success':operation.state, 'danger':!operation.state}" ng-repeat="operation in operations">
+                            <td class="text-center">{{operation.id}}</td>
+                            <td class="text-left">{{operation.expression}}</td>
+                            <td class="text-center">
+                                <span ng-class="{'label label-success':operation.state, 'label label-danger':!operation.state}"
+                                      ng-init="state = operation.state ? 'Yes' : 'No'">
+                                    {{state}}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <span>All operations count are {{operations.length}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="navbar-fixed-bottom row-fluid">
+        <div class="navbar-inner navbar-inverse">
+            <div class="container text-center">
+                <span class="text-footer">Copyright 2016 Artur Belousov</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

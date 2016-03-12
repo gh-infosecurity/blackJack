@@ -1,0 +1,32 @@
+.well {
+    border-color: #0f0f0f;
+    border-radius: 10px;
+    border: 2px solid;
+    background: #eeeeee;
+    width: 260px;
+    margin: 0px auto 20px;
+}
+
+.btn {
+    width: 50px;
+    border-radius: 12px;
+}
+
+.form-control {
+    border: 2px solid;
+}
+
+body {
+    background-color: #999;
+    background-image: url(../images/bg.jpg);
+    background-size: cover;
+}
+
+input[type="text"] {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+}
+
+span.text-footer {
+    color: white;
+}

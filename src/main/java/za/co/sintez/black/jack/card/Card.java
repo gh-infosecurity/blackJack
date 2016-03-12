@@ -1,0 +1,31 @@
+package za.co.sintez.black.jack.card;
+
+public class Card {
+    private boolean visible;
+    private String name;
+    private String suit;
+    private int score;
+
+    public Card(boolean visible, String name, String suit, int score) {
+        this.visible = visible;
+        this.name = name;
+        this.suit = suit;
+        this.score = score;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    public int getScore() {
+        return score;
+    }
+}
