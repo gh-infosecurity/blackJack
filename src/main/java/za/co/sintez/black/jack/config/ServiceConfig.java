@@ -22,13 +22,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public CardFactory cardFactory(){
-        return new CardFactory();
-    }
-
-    @Bean
     public CardDeck cardDeck(){
-        return cardFactory().createCardDeck();
+        return new CardFactory().createCardDeck();
     }
 
     @Bean

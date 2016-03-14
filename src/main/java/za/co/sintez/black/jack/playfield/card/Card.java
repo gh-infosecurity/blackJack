@@ -1,6 +1,8 @@
 package za.co.sintez.black.jack.playfield.card;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable{
     private boolean visible;
     private String name;
     private String suit;
