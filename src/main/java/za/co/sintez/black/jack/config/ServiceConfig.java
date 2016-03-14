@@ -31,7 +31,6 @@ public class ServiceConfig {
         playfield.setPlayer(new Player());
         playfield.setDealer(new Dealer());
         playfield.setCash(0);
-
         return playfield;
     }
 }

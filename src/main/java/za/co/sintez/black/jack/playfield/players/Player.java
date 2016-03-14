@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import za.co.sintez.black.jack.playfield.card.Card;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements Serializable {
     private Integer cash = 100;
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
     public Integer getCash() {
         return cash;

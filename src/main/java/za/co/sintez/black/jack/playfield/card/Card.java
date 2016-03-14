@@ -28,4 +28,8 @@ public class Card {
     public int getScore() {
         return score;
     }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }
