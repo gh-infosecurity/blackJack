@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import za.co.sintez.black.jack.dao.CacheDaoI;
 import za.co.sintez.black.jack.playfield.card.Card;
 import za.co.sintez.black.jack.playfield.card.CardDeck;
-import za.co.sintez.black.jack.playfield.card.CardFactory;
 import za.co.sintez.black.jack.playfield.players.Dealer;
 import za.co.sintez.black.jack.playfield.players.Player;
 import za.co.sintez.black.jack.playfield.Playfield;
@@ -30,10 +29,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class Service {
     private static final String PLAYER = "Player";
     private static final String DEALER = "Dealer";
+    private static final String CARD = "CARDS";
 
     private CacheDaoI cacheDao;
     private Playfield playfield;
-    private CardFactory cardFactory;
+    private CardDeck cardDeck;
 
     @Autowired
     public void setCacheDao(CacheDaoI cacheDao) {
@@ -46,8 +46,8 @@ public class Service {
     }
 
     @Autowired
-    public void setCardFactory(CardFactory cardFactory) {
-        this.cardFactory = cardFactory;
+    public void setCardDeck(CardDeck cardDeck) {
+        this.cardDeck = cardDeck;
     }
 
     @PostConstruct
@@ -59,8 +59,8 @@ public class Service {
     Response bet(@RequestBody Request request) {
         int bet = request.getBet();
 
-        Player player = cacheDao.findPlayer(PLAYER);
-        Dealer dealer = cacheDao.findDealer(DEALER);
+        Player player = cacheDao.getPlayer(PLAYER);
+        Dealer dealer = cacheDao.getDealer(DEALER);
 
         playfield.setCash(player.doBet(bet) + dealer.doBet(bet));
         playfield.setPlayer(player);
@@ -75,20 +75,18 @@ public class Service {
 
     @RequestMapping("/pass/card")
     Response passCard() {
-        Player player = cacheDao.findPlayer(PLAYER);
-        Dealer dealer = cacheDao.findDealer(DEALER);
+        Player player = cacheDao.getPlayer(PLAYER);
+        Dealer dealer = cacheDao.getDealer(DEALER);
 
-        CardDeck cardDeck = cardFactory.createCardDeck();
-        List<Card> cards = cardDeck.getCardDeck();
+        List<Card> cards = cardDeck.getCards();
         Collections.shuffle(cards);
-        List<Card> playerCards = new ArrayList<>(cards.subList(cards.size() - 2, cards.size()));
-        cards.removeAll(playerCards);
-        List<Card> dealerCards = new ArrayList<>(cards.subList(cards.size() - 2, cards.size()));
-        cards.removeAll(dealerCards);
 
-        player.getCards().addAll(playerCards);
-        dealer.getCards().addAll(dealerCards);
-        dealer.getCards().get(1).setVisible(false);
+        player.getCards().addAll(getCards(cards));
+        dealer.getCards().addAll(getCards(cards));
+        dealer.getCards().get(0).setVisible(false);
+
+        storePlayers(player, dealer);
+        cacheDao.saveCardDeck(cards, CARD);
 
         playfield.setPlayer(player);
         playfield.setDealer(dealer);
@@ -96,6 +94,37 @@ public class Service {
         Response response = new Response();
         response.setPlayfield(playfield);
         return response;
+    }
+
+    @RequestMapping("/hint")
+    Response hint() {
+        Player player = cacheDao.getPlayer(PLAYER);
+        Dealer dealer = cacheDao.getDealer(DEALER);
+
+        List<Card> cards = cacheDao.getCardDeck(CARD);
+        player.getCards().addAll(getCard(cards));
+
+        cacheDao.savePlayer(player, PLAYER);
+        cacheDao.saveCardDeck(cards, CARD);
+
+        playfield.setPlayer(player);
+        playfield.setDealer(dealer);
+
+        Response response = new Response();
+        response.setPlayfield(playfield);
+        return response;
+    }
+
+    private List<Card> getCards(List<Card> cards) {
+        List<Card> playerCards = new ArrayList<>(cards.subList(cards.size() - 2, cards.size()));
+        cards.removeAll(playerCards);
+        return playerCards;
+    }
+
+    private List<Card> getCard(List<Card> cards) {
+        List<Card> playerCards = new ArrayList<>(cards.subList(cards.size() - 1, cards.size()));
+        cards.removeAll(playerCards);
+        return playerCards;
     }
 
     private void storePlayers(Player player, Dealer dealer) {
