@@ -1,4 +1,4 @@
-package za.co.sintez.black.jack.card;
+package za.co.sintez.black.jack.playfield.card;
 
 public enum Cards {
     _2_DIAMONDS(true, "2", Suit.DIAMONDS, 2),

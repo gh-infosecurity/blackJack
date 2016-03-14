@@ -1,19 +1,20 @@
 package za.co.sintez.black.jack.playfield;
 
-import za.co.sintez.black.jack.card.CardDeck;
-import za.co.sintez.black.jack.players.Dealer;
-import za.co.sintez.black.jack.players.Player;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import za.co.sintez.black.jack.playfield.card.CardDeck;
+import za.co.sintez.black.jack.playfield.players.Dealer;
+import za.co.sintez.black.jack.playfield.players.Player;
 
 public class Playfield {
-    private Dealer dealer;
     private Player player;
-    private CardDeck cardDeck;
+    private Dealer dealer;
     private int cash;
 
     public Dealer getDealer() {
         return dealer;
     }
 
+    @JsonProperty
     public void setDealer(Dealer dealer) {
         this.dealer = dealer;
     }
@@ -22,22 +23,16 @@ public class Playfield {
         return player;
     }
 
+    @JsonProperty
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public CardDeck getCardDeck() {
-        return cardDeck;
-    }
-
-    public void setCardDeck(CardDeck cardDeck) {
-        this.cardDeck = cardDeck;
     }
 
     public int getCash() {
         return cash;
     }
 
+    @JsonProperty
     public void setCash(int cash) {
         this.cash = cash;
     }

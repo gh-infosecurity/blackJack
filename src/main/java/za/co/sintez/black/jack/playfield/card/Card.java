@@ -1,4 +1,4 @@
-package za.co.sintez.black.jack.card;
+package za.co.sintez.black.jack.playfield.card;
 
 public class Card {
     private boolean visible;

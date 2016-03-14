@@ -1,4 +1,4 @@
-package za.co.sintez.black.jack.card;
+package za.co.sintez.black.jack.playfield.card;
 
 import java.util.ArrayList;
 import java.util.List;

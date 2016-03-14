@@ -1,7 +1,7 @@
 package za.co.sintez.black.jack.dao;
 
-import za.co.sintez.black.jack.players.Dealer;
-import za.co.sintez.black.jack.players.Player;
+import za.co.sintez.black.jack.playfield.players.Dealer;
+import za.co.sintez.black.jack.playfield.players.Player;
 
 public interface CacheDaoI {
 

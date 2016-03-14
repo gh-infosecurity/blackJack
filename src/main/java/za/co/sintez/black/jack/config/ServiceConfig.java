@@ -2,9 +2,10 @@ package za.co.sintez.black.jack.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import za.co.sintez.black.jack.card.CardFactory;
-import za.co.sintez.black.jack.players.Dealer;
-import za.co.sintez.black.jack.players.Player;
+import za.co.sintez.black.jack.playfield.Playfield;
+import za.co.sintez.black.jack.playfield.card.CardFactory;
+import za.co.sintez.black.jack.playfield.players.Dealer;
+import za.co.sintez.black.jack.playfield.players.Player;
 
 @Configuration
 public class ServiceConfig {
@@ -22,5 +23,15 @@ public class ServiceConfig {
     @Bean
     public CardFactory cardFactory(){
         return new CardFactory();
+    }
+
+    @Bean
+    public Playfield playfield(){
+        Playfield playfield = new Playfield();
+        playfield.setPlayer(new Player());
+        playfield.setDealer(new Dealer());
+        playfield.setCash(0);
+
+        return playfield;
     }
 }
