@@ -10,6 +10,7 @@ import za.co.sintez.black.jack.gamefield.GameField;
 import za.co.sintez.black.jack.gamefield.card.CardBuilder;
 import za.co.sintez.black.jack.gamefield.players.Dealer;
 import za.co.sintez.black.jack.gamefield.players.Player;
+import za.co.sintez.black.jack.response.Controller;
 
 @Configuration
 public class RedisConfig {
@@ -40,5 +41,10 @@ public class RedisConfig {
         gameField.setCards(new CardBuilder().build());
         gameField.setCash(0);
         return gameField;
+    }
+
+    @Bean
+    public Controller controller() {
+        return new Controller();
     }
 }
