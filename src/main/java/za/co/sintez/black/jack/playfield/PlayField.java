@@ -5,7 +5,7 @@ import za.co.sintez.black.jack.playfield.card.CardDeck;
 import za.co.sintez.black.jack.playfield.players.Dealer;
 import za.co.sintez.black.jack.playfield.players.Player;
 
-public class Playfield {
+public class PlayField {
     private Player player;
     private Dealer dealer;
     private int cash;

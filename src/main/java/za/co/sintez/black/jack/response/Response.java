@@ -1,17 +1,17 @@
 package za.co.sintez.black.jack.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import za.co.sintez.black.jack.playfield.Playfield;
+import za.co.sintez.black.jack.playfield.PlayField;
 
 public class Response {
-    private Playfield playfield;
+    private PlayField playField;
 
-    public Playfield getPlayfield() {
-        return playfield;
+    public PlayField getPlayField() {
+        return playField;
     }
 
     @JsonProperty
-    public void setPlayfield(Playfield playfield) {
-        this.playfield = playfield;
+    public void setPlayField(PlayField playField) {
+        this.playField = playField;
     }
 }

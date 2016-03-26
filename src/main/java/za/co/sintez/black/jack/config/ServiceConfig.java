@@ -2,7 +2,7 @@ package za.co.sintez.black.jack.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import za.co.sintez.black.jack.playfield.Playfield;
+import za.co.sintez.black.jack.playfield.PlayField;
 import za.co.sintez.black.jack.playfield.card.CardDeck;
 import za.co.sintez.black.jack.playfield.card.CardFactory;
 import za.co.sintez.black.jack.playfield.players.Dealer;
@@ -27,11 +27,11 @@ public class ServiceConfig {
     }
 
     @Bean
-    public Playfield playfield(){
-        Playfield playfield = new Playfield();
-        playfield.setPlayer(new Player());
-        playfield.setDealer(new Dealer());
-        playfield.setCash(0);
-        return playfield;
+    public PlayField playfield(){
+        PlayField playField = new PlayField();
+        playField.setPlayer(new Player());
+        playField.setDealer(new Dealer());
+        playField.setCash(0);
+        return playField;
     }
 }

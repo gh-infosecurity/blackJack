@@ -9,7 +9,7 @@ import za.co.sintez.black.jack.playfield.card.Card;
 import za.co.sintez.black.jack.playfield.card.CardDeck;
 import za.co.sintez.black.jack.playfield.players.Dealer;
 import za.co.sintez.black.jack.playfield.players.Player;
-import za.co.sintez.black.jack.playfield.Playfield;
+import za.co.sintez.black.jack.playfield.PlayField;
 import za.co.sintez.black.jack.request.Request;
 import za.co.sintez.black.jack.response.Response;
 
@@ -29,10 +29,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class Service {
     private static final String PLAYER = "Player";
     private static final String DEALER = "Dealer";
-    private static final String CARD = "CARDS";
+    private static final String CARDS = "cards";
 
     private CacheDaoI cacheDao;
-    private Playfield playfield;
+    private PlayField playField;
     private CardDeck cardDeck;
 
     @Autowired
@@ -41,8 +41,8 @@ public class Service {
     }
 
     @Autowired
-    public void setPlayfield(Playfield playfield) {
-        this.playfield = playfield;
+    public void setPlayField(PlayField playField) {
+        this.playField = playField;
     }
 
     @Autowired
@@ -52,7 +52,7 @@ public class Service {
 
     @PostConstruct
     public void init() {
-        storePlayers(playfield.getPlayer(), playfield.getDealer());
+        storePlayers(playField.getPlayer(), playField.getDealer());
     }
 
     @RequestMapping("/bet")
@@ -62,14 +62,14 @@ public class Service {
         Player player = cacheDao.getPlayer(PLAYER);
         Dealer dealer = cacheDao.getDealer(DEALER);
 
-        playfield.setCash(player.doBet(bet) + dealer.doBet(bet));
-        playfield.setPlayer(player);
-        playfield.setDealer(dealer);
+        playField.setCash(player.doBet(bet) + dealer.doBet(bet));
+        playField.setPlayer(player);
+        playField.setDealer(dealer);
 
         storePlayers(player, dealer);
 
         Response response = new Response();
-        response.setPlayfield(playfield);
+        response.setPlayField(playField);
         return response;
     }
 
@@ -86,13 +86,13 @@ public class Service {
         dealer.getCards().get(0).setVisible(false);
 
         storePlayers(player, dealer);
-        cacheDao.saveCardDeck(cards, CARD);
+        cacheDao.saveCardDeck(cards, CARDS);
 
-        playfield.setPlayer(player);
-        playfield.setDealer(dealer);
+        playField.setPlayer(player);
+        playField.setDealer(dealer);
 
         Response response = new Response();
-        response.setPlayfield(playfield);
+        response.setPlayField(playField);
         return response;
     }
 
@@ -101,17 +101,17 @@ public class Service {
         Player player = cacheDao.getPlayer(PLAYER);
         Dealer dealer = cacheDao.getDealer(DEALER);
 
-        List<Card> cards = cacheDao.getCardDeck(CARD);
+        List<Card> cards = cacheDao.getCardDeck(CARDS);
         player.getCards().addAll(getCard(cards));
 
         cacheDao.savePlayer(player, PLAYER);
-        cacheDao.saveCardDeck(cards, CARD);
+        cacheDao.saveCardDeck(cards, CARDS);
 
-        playfield.setPlayer(player);
-        playfield.setDealer(dealer);
+        playField.setPlayer(player);
+        playField.setDealer(dealer);
 
         Response response = new Response();
-        response.setPlayfield(playfield);
+        response.setPlayField(playField);
         return response;
     }
 
