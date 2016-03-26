@@ -1,7 +1,7 @@
-package za.co.sintez.black.jack.playfield.players;
+package za.co.sintez.black.jack.gamefield.players;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import za.co.sintez.black.jack.playfield.card.Card;
+import za.co.sintez.black.jack.gamefield.card.Card;
 
 import java.io.Serializable;
 import java.util.ArrayList;

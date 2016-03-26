@@ -1,13 +1,17 @@
-package za.co.sintez.black.jack.playfield;
+package za.co.sintez.black.jack.gamefield;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import za.co.sintez.black.jack.playfield.card.CardDeck;
-import za.co.sintez.black.jack.playfield.players.Dealer;
-import za.co.sintez.black.jack.playfield.players.Player;
+import za.co.sintez.black.jack.gamefield.card.Card;
+import za.co.sintez.black.jack.gamefield.players.Dealer;
+import za.co.sintez.black.jack.gamefield.players.Player;
 
-public class PlayField {
+import java.io.Serializable;
+import java.util.List;
+
+public class GameField implements Serializable {
     private Player player;
     private Dealer dealer;
+    private List<Card> cards;
     private int cash;
 
     public Dealer getDealer() {
@@ -26,6 +30,15 @@ public class PlayField {
     @JsonProperty
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    @JsonProperty
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 
     public int getCash() {

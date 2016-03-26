@@ -5,16 +5,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.sintez.black.jack.dao.CacheDaoI;
-import za.co.sintez.black.jack.playfield.card.Card;
-import za.co.sintez.black.jack.playfield.card.CardDeck;
-import za.co.sintez.black.jack.playfield.players.Dealer;
-import za.co.sintez.black.jack.playfield.players.Player;
-import za.co.sintez.black.jack.playfield.PlayField;
+import za.co.sintez.black.jack.gamefield.GameField;
+import za.co.sintez.black.jack.gamefield.card.Card;
+import za.co.sintez.black.jack.gamefield.card.CardBuilder;
+import za.co.sintez.black.jack.gamefield.players.Dealer;
+import za.co.sintez.black.jack.gamefield.players.Player;
 import za.co.sintez.black.jack.request.Request;
 import za.co.sintez.black.jack.response.Response;
 
 import javax.annotation.PostConstruct;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,13 +26,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
         consumes = APPLICATION_JSON_VALUE,
         produces = APPLICATION_JSON_VALUE)
 public class Service {
-    private static final String PLAYER = "Player";
-    private static final String DEALER = "Dealer";
-    private static final String CARDS = "cards";
+    public static final String PLAY_FIELD = "play_field";
 
     private CacheDaoI cacheDao;
-    private PlayField playField;
-    private CardDeck cardDeck;
+    private GameField gameField;
 
     @Autowired
     public void setCacheDao(CacheDaoI cacheDao) {
@@ -41,94 +37,96 @@ public class Service {
     }
 
     @Autowired
-    public void setPlayField(PlayField playField) {
-        this.playField = playField;
-    }
-
-    @Autowired
-    public void setCardDeck(CardDeck cardDeck) {
-        this.cardDeck = cardDeck;
+    public void setGameField(GameField gameField) {
+        this.gameField = gameField;
     }
 
     @PostConstruct
     public void init() {
-        storePlayers(playField.getPlayer(), playField.getDealer());
+        cacheDao.saveGameField(gameField, PLAY_FIELD);
     }
 
     @RequestMapping("/bet")
     Response bet(@RequestBody Request request) {
         int bet = request.getBet();
 
-        Player player = cacheDao.getPlayer(PLAYER);
-        Dealer dealer = cacheDao.getDealer(DEALER);
+        GameField gameField = cacheDao.getGameField(PLAY_FIELD);
 
-        playField.setCash(player.doBet(bet) + dealer.doBet(bet));
-        playField.setPlayer(player);
-        playField.setDealer(dealer);
 
-        storePlayers(player, dealer);
+        Player player = gameField.getPlayer();
+        Dealer dealer = gameField.getDealer();
+
+        gameField.setCash(player.doBet(bet) + dealer.doBet(bet));
+
+        gameField.setPlayer(player);
+        gameField.setDealer(dealer);
+
+
+        cacheDao.saveGameField(gameField, PLAY_FIELD);
+
 
         Response response = new Response();
-        response.setPlayField(playField);
+        response.setGameField(gameField);
         return response;
     }
 
     @RequestMapping("/pass/card")
     Response passCard() {
-        Player player = cacheDao.getPlayer(PLAYER);
-        Dealer dealer = cacheDao.getDealer(DEALER);
+        GameField gameField = cacheDao.getGameField(PLAY_FIELD);
 
-        List<Card> cards = cardDeck.getCards();
+        Player player = gameField.getPlayer();
+        Dealer dealer = gameField.getDealer();
+        List<Card> cards = gameField.getCards();
+
         Collections.shuffle(cards);
 
-        player.getCards().addAll(getCards(cards));
-        dealer.getCards().addAll(getCards(cards));
+        player.getCards().addAll(passCards(cards));
+        dealer.getCards().addAll(passCards(cards));
         dealer.getCards().get(0).setVisible(false);
 
-        storePlayers(player, dealer);
-        cacheDao.saveCardDeck(cards, CARDS);
+        gameField.setPlayer(player);
+        gameField.setDealer(dealer);
+        gameField.setCards(cards);
 
-        playField.setPlayer(player);
-        playField.setDealer(dealer);
+        cacheDao.saveGameField(gameField, PLAY_FIELD);
 
         Response response = new Response();
-        response.setPlayField(playField);
+        response.setGameField(gameField);
         return response;
     }
 
     @RequestMapping("/hint")
     Response hint() {
-        Player player = cacheDao.getPlayer(PLAYER);
-        Dealer dealer = cacheDao.getDealer(DEALER);
+        GameField gameField = cacheDao.getGameField(PLAY_FIELD);
 
-        List<Card> cards = cacheDao.getCardDeck(CARDS);
-        player.getCards().addAll(getCard(cards));
+        Player player = gameField.getPlayer();
+        Dealer dealer = gameField.getDealer();
+        List<Card> cards = gameField.getCards();
 
-        cacheDao.savePlayer(player, PLAYER);
-        cacheDao.saveCardDeck(cards, CARDS);
+        player.getCards().addAll(hintCard(cards));
 
-        playField.setPlayer(player);
-        playField.setDealer(dealer);
+        gameField.setPlayer(player);
+        gameField.setDealer(dealer);
+        gameField.setCards(cards);
+
+        cacheDao.saveGameField(gameField, PLAY_FIELD);
 
         Response response = new Response();
-        response.setPlayField(playField);
+        response.setGameField(gameField);
         return response;
     }
 
-    private List<Card> getCards(List<Card> cards) {
-        List<Card> playerCards = new ArrayList<>(cards.subList(cards.size() - 2, cards.size()));
-        cards.removeAll(playerCards);
-        return playerCards;
+    private List<Card> passCards(List<Card> cards) {
+        return getCards(cards, 2);
     }
 
-    private List<Card> getCard(List<Card> cards) {
-        List<Card> playerCards = new ArrayList<>(cards.subList(cards.size() - 1, cards.size()));
-        cards.removeAll(playerCards);
-        return playerCards;
+    private List<Card> hintCard(List<Card> cards) {
+        return getCards(cards, 1);
     }
 
-    private void storePlayers(Player player, Dealer dealer) {
-        cacheDao.savePlayer(player, PLAYER);
-        cacheDao.saveDealer(dealer, DEALER);
+    private List<Card> getCards(List<Card> cards, int count) {
+        List<Card> playerCards = new ArrayList<>(cards.subList(cards.size() - count, cards.size()));
+        cards.removeAll(playerCards);
+        return playerCards;
     }
 }

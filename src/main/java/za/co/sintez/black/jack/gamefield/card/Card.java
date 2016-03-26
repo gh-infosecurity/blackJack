@@ -1,4 +1,4 @@
-package za.co.sintez.black.jack.playfield.card;
+package za.co.sintez.black.jack.gamefield.card;
 
 import java.io.Serializable;
 

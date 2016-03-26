@@ -1,4 +1,4 @@
-package za.co.sintez.black.jack.playfield.card;
+package za.co.sintez.black.jack.gamefield.card;
 
 public enum Suit {
     DIAMONDS("diamonds"),
