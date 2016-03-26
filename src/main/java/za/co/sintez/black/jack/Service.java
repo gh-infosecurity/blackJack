@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import za.co.sintez.black.jack.dao.CacheDaoI;
 import za.co.sintez.black.jack.gamefield.GameField;
 import za.co.sintez.black.jack.request.Request;
-import za.co.sintez.black.jack.response.Controller;
 import za.co.sintez.black.jack.response.Response;
 
 import javax.annotation.PostConstruct;

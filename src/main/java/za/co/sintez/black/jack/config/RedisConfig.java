@@ -4,13 +4,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import za.co.sintez.black.jack.Controller;
+import za.co.sintez.black.jack.ScoreChecker;
 import za.co.sintez.black.jack.dao.CacheDao;
 import za.co.sintez.black.jack.dao.CacheDaoI;
 import za.co.sintez.black.jack.gamefield.GameField;
 import za.co.sintez.black.jack.gamefield.card.CardBuilder;
 import za.co.sintez.black.jack.gamefield.players.Dealer;
 import za.co.sintez.black.jack.gamefield.players.Player;
-import za.co.sintez.black.jack.response.Controller;
 
 @Configuration
 public class RedisConfig {
@@ -46,5 +47,10 @@ public class RedisConfig {
     @Bean
     public Controller controller() {
         return new Controller();
+    }
+
+    @Bean
+    public ScoreChecker scoreChecker() {
+        return new ScoreChecker();
     }
 }

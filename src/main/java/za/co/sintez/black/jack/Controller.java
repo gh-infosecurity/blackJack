@@ -1,5 +1,7 @@
-package za.co.sintez.black.jack.response;
+package za.co.sintez.black.jack;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import za.co.sintez.black.jack.gamefield.GameField;
 import za.co.sintez.black.jack.gamefield.card.Card;
 import za.co.sintez.black.jack.gamefield.players.Dealer;
@@ -9,7 +11,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class Controller {
+    private ScoreChecker scoreChecker;
+
+    @Autowired
+    public void setScoreChecker(ScoreChecker scoreChecker) {
+        this.scoreChecker = scoreChecker;
+    }
 
     public void bet(int bet, GameField gameField) {
         Player player = gameField.getPlayer();
@@ -28,9 +37,17 @@ public class Controller {
 
         Collections.shuffle(cards);
 
-        player.getCards().addAll(passCards(cards));
+        List<Card> playerCards = passCards(cards);
+        player.getCards().addAll(playerCards);
         dealer.getCards().addAll(passCards(cards));
-        dealer.getCards().get(0).setVisible(false);
+
+        if (scoreChecker.isBlackJack(playerCards)) {
+            player.win(gameField.getCash());
+            gameField.setCash(0);
+            dealer.getCards().get(0).setVisible(true);
+        } else {
+            dealer.getCards().get(0).setVisible(false);
+        }
 
         updateGameField(gameField, player, dealer, cards);
     }

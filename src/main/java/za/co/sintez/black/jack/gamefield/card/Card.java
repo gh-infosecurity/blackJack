@@ -2,17 +2,17 @@ package za.co.sintez.black.jack.gamefield.card;
 
 import java.io.Serializable;
 
-public class Card implements Serializable{
+public class Card implements Serializable {
     private boolean visible;
     private String name;
     private String suit;
     private int score;
 
-    public Card(boolean visible, String name, String suit, int score) {
-        this.visible = visible;
-        this.name = name;
-        this.suit = suit;
-        this.score = score;
+    public Card(Cards card) {
+        this.visible = card.isVisible();
+        this.name = card.getName();
+        this.suit = card.getSuit().value();
+        this.score = card.getScore();
     }
 
     public boolean isVisible() {

@@ -8,8 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements Serializable {
+    private boolean winner;
     private Integer cash = 100;
     private List<Card> cards = new ArrayList<>();
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    @JsonProperty
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
 
     public Integer getCash() {
         return cash;
@@ -30,7 +40,12 @@ public class Player implements Serializable {
     }
 
     public int doBet(int bet) {
-        cash = cash - bet;
+        this.cash = this.cash - bet;
         return bet;
+    }
+
+    public void win(int cash) {
+        this.cash = this.cash + cash;
+        winner = true;
     }
 }
