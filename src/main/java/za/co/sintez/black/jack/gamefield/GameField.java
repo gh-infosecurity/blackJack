@@ -49,4 +49,15 @@ public class GameField implements Serializable {
     public void setCash(int cash) {
         this.cash = cash;
     }
+
+    public void clearCash() {
+        this.cash = 0;
+    }
+
+    public void clearPlayers(List<Card> playerCards, List<Card> dealerCards) {
+        player.getCards().removeAll(playerCards);
+        dealer.getCards().removeAll(dealerCards);
+        player.setWinner(false);
+        dealer.setWinner(false);
+    }
 }

@@ -19,8 +19,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
         consumes = APPLICATION_JSON_VALUE,
         produces = APPLICATION_JSON_VALUE)
 public class Service {
-    public static final String PLAY_FIELD = "play_field";
-
     private CacheDaoI cacheDao;
     private GameField gameField;
     private Controller controller;
@@ -42,30 +40,38 @@ public class Service {
 
     @PostConstruct
     public void init() {
-        cacheDao.saveGameField(gameField, PLAY_FIELD);
+        cacheDao.saveGameField(gameField);
     }
 
     @RequestMapping("/bet")
     Response bet(@RequestBody Request request) {
-        GameField gameField = cacheDao.getGameField(PLAY_FIELD);
+        GameField gameField = cacheDao.getGameField();
         controller.bet(request.getBet(), gameField);
-        cacheDao.saveGameField(gameField, PLAY_FIELD);
+        cacheDao.saveGameField(gameField);
         return getResponse(gameField);
     }
 
     @RequestMapping("/pass/card")
     Response passCard() {
-        GameField gameField = cacheDao.getGameField(PLAY_FIELD);
+        GameField gameField = cacheDao.getGameField();
         controller.passCard(gameField);
-        cacheDao.saveGameField(gameField, PLAY_FIELD);
+        cacheDao.saveGameField(gameField);
         return getResponse(gameField);
     }
 
     @RequestMapping("/hint")
     Response hint() {
-        GameField gameField = cacheDao.getGameField(PLAY_FIELD);
+        GameField gameField = cacheDao.getGameField();
         controller.hint(gameField);
-        cacheDao.saveGameField(gameField, PLAY_FIELD);
+        cacheDao.saveGameField(gameField);
+        return getResponse(gameField);
+    }
+
+    @RequestMapping("/stand")
+    Response stand() {
+        GameField gameField = cacheDao.getGameField();
+        controller.stand(gameField);
+        cacheDao.saveGameField(gameField);
         return getResponse(gameField);
     }
 

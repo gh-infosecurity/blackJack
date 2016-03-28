@@ -1,6 +1,7 @@
 package za.co.sintez.black.jack.gamefield.card;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CardBuilder {
@@ -11,6 +12,7 @@ public class CardBuilder {
         for (Cards card : Cards.values()) {
             cards.add(new Card(card));
         }
+        Collections.shuffle(cards);
         return cards;
     }
 }

@@ -16,4 +16,24 @@ public class ScoreChecker {
         }
         return score == BLACK_JACK;
     }
+
+    public boolean isBust(List<Card> cards) {
+        int score = ZERO;
+        for (Card card : cards) {
+            score += card.getScore();
+        }
+        return score > BLACK_JACK;
+    }
+
+    public boolean isTwentyOne(List<Card> cards) {
+        return isBlackJack(cards);
+    }
+
+    public int getScore(List<Card> cards) {
+        int score = ZERO;
+        for (Card card : cards) {
+            score += card.getScore();
+        }
+        return score;
+    }
 }

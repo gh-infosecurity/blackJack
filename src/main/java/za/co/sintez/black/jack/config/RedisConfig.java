@@ -39,7 +39,6 @@ public class RedisConfig {
         GameField gameField = new GameField();
         gameField.setPlayer(new Player());
         gameField.setDealer(new Dealer());
-        gameField.setCards(new CardBuilder().build());
         gameField.setCash(0);
         return gameField;
     }
@@ -52,5 +51,10 @@ public class RedisConfig {
     @Bean
     public ScoreChecker scoreChecker() {
         return new ScoreChecker();
+    }
+
+    @Bean
+    public CardBuilder cardBuilder() {
+        return new CardBuilder();
     }
 }

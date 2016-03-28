@@ -9,6 +9,8 @@ import za.co.sintez.black.jack.gamefield.GameField;
 @Component
 @Repository
 public class CacheDao implements CacheDaoI {
+    private static final String KEY = "play_field";
+
     private RedisTemplate<String, GameField> redisTemplate;
 
     @Autowired
@@ -17,12 +19,12 @@ public class CacheDao implements CacheDaoI {
     }
 
     @Override
-    public void saveGameField(GameField gameField, String key) {
-        redisTemplate.opsForValue().set(key, gameField);
+    public void saveGameField(GameField gameField) {
+        redisTemplate.opsForValue().set(KEY, gameField);
     }
 
     @Override
-    public GameField getGameField(String key) {
-        return redisTemplate.opsForValue().get(key);
+    public GameField getGameField() {
+        return redisTemplate.opsForValue().get(KEY);
     }
 }
